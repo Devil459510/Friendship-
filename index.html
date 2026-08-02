@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Friendship Day Theme ─── */
+    /* ─── Same styles as before (shortened for brevity) ─── */
     :root {
       --bg-dark: #1a1423;
       --bg-mid: #2a1f33;
@@ -104,6 +104,7 @@
 <body>
   <div class="sparkle" id="sparkleLayer"></div>
 
+  <!-- ─── HERO (envelope) ─── -->
   <section id="hero">
     <div class="eyebrow" id="envelopeLabel">🤝 For My Best Friend</div>
     <div class="envelope-wrap" id="envelopeWrap">
@@ -115,6 +116,7 @@
     <div class="tap-hint" id="tapHint">👆 Tap to open</div>
   </section>
 
+  <!-- ─── LETTER ─── -->
   <section id="letter">
     <div class="letter-card">
       <div class="letter-heading" id="letterHeading">✨ For the Best Friend Anyone Could Ask For ✨</div>
@@ -123,300 +125,264 @@
     </div>
   </section>
 
-  <div id="dynamicSections"></div>
+  <!-- ─── ALL GAME SECTIONS (hardcoded) ─── -->
 
+  <!-- Catch -->
+  <section class="reveal">
+    <h2 class="section-title" id="catchTitle">🐟 Catch the Treat (Friendship Edition)</h2>
+    <p class="section-sub" id="catchSubtitle">Move your finger or mouse to catch the falling friendship snacks</p>
+    <div id="game-area">
+      <div class="cat-player" id="catPlayer">🐱</div>
+    </div>
+    <div class="game-hud">
+      <span>🍩 <span id="catchScore">0</span></span>
+      <span>⏱️ <span id="catchTimer">25</span>s</span>
+    </div>
+    <div class="game-msg" id="catchMsg">👆 Move to catch snacks!</div>
+  </section>
+
+  <!-- Pounce -->
+  <section class="reveal">
+    <h2 class="section-title" id="pounceTitle">🐾 Pounce – Friendship High‑Five</h2>
+    <p class="section-sub" id="pounceSubtitle">Tap the paws before they disappear</p>
+    <div class="pounce-grid" id="pounceGrid">
+      <!-- filled by JS -->
+    </div>
+    <div class="game-hud" style="justify-content:center;gap:40px;">
+      <span>🤝 <span id="pounceScore">0</span></span>
+      <span>⏱️ <span id="pounceTimer">20</span>s</span>
+    </div>
+    <div class="game-msg" id="pounceMsg">👆 Tap the popping high‑fives!</div>
+  </section>
+
+  <!-- Wheel -->
+  <section class="reveal">
+    <h2 class="section-title" id="wheelTitle">🎡 Friendship Activity Wheel</h2>
+    <p class="section-sub" id="wheelSubtitle">Let fate decide our next hangout</p>
+    <div class="wheel-wrap">
+      <div class="wheel-pointer">▼</div>
+      <canvas id="wheelCanvas" width="600" height="600"></canvas>
+      <div class="wheel-hub"></div>
+    </div>
+    <div class="wheel-result" id="wheelResult">🎲 Tap the wheel</div>
+    <button class="btn" id="spinBtn">🔄 Spin!</button>
+  </section>
+
+  <!-- Scratch -->
+  <section class="reveal">
+    <h2 class="section-title" id="scratchTitle">🎁 Scratch to Reveal a Friendship Quote</h2>
+    <p class="section-sub" id="scratchSubtitle">Scratch the gold foil to see a message</p>
+    <div class="scratch-wrap">
+      <div class="scratch-message" id="scratchMessage">✨ Friendship isn't a big thing – it's a million little things ✨</div>
+      <canvas id="scratchCanvas" width="420" height="180"></canvas>
+    </div>
+  </section>
+
+  <!-- Memory -->
+  <section class="reveal">
+    <h2 class="section-title" id="memoryTitle">🧩 Memory Match – Friendship Icons</h2>
+    <p class="section-sub" id="memorySubtitle">Find all 6 pairs of friendship symbols</p>
+    <div class="memory-grid" id="memoryGrid"></div>
+    <div class="game-msg" id="memoryMsg">⭐ Flip cards to match, friend!</div>
+  </section>
+
+  <!-- Compliment -->
+  <section class="reveal">
+    <h2 class="section-title" id="complimentTitle">💖 Compliment Booth – Friendship Edition</h2>
+    <p class="section-sub" id="complimentSubtitle">Feeling down? Tap here for a boost</p>
+    <div class="compliment-card" id="complimentCard">✨ Tap the button ✨</div>
+    <button class="btn" id="complimentBtn">🌟 Give me a friendship boost</button>
+  </section>
+
+  <!-- Footer -->
   <footer>
     <div id="footerText">🤝 Friendship Day – You are loved</div>
     <span id="footerSubtext">— Always by your side · 2026 —</span>
   </footer>
 
   <script>
-    // ─── CONFIG – Friendship Day Edition ───
+    // ─── CONFIG – edit this to customise everything ───
     const CONFIG = {
-      recipientName: "My Best Friend",
-      siteTitle: "🤝 Friendship Day – For My Best Friend",
-      envelope: {
-        label: "🤝 For My Best Friend",
-        tapHint: "👆 Tap to open",
-        letterHeading: "✨ For the Best Friend Anyone Could Ask For ✨",
-        letterParagraphs: [
-          "There’s something special about a friendship that feels like home – no matter how far apart we are, or how long it’s been since we last spoke, I know you’ve got my back, and I’ve got yours.",
-          "You’ve seen me at my best and at my worst. You’ve celebrated my victories and held me together during my struggles. Through laughter and tears, silence and endless chatter – you’ve been my anchor.",
-          "They say friends are the family we choose. I couldn’t have chosen better. You are loyal, honest, kind, and absolutely hilarious. You make even the dullest days feel like an adventure, and you’ve taught me what it really means to be there for someone.",
-          "This Friendship Day, I just want to say: thank you. Thank you for being you – unapologetically, beautifully, wonderfully you. For the late‑night talks, the stupid jokes, the deep conversations, and for never judging me, even when I was a mess.",
-          "I don’t say it enough, but I love you, mate. You’re not just a friend; you’re a part of who I am. And I wouldn’t trade that for anything in the world.",
-          "So here’s to us – to many more years of adventures, inside jokes, and growing older together (even if we never actually grow up). Happy Friendship Day! 💛"
-        ],
-        letterSignature: "— Forever grateful, your friend 🤝"
+      recipientName: "My Best Friend", // change to your friend's name
+      envelopeLabel: "🤝 For My Best Friend",
+      tapHint: "👆 Tap to open",
+      letterHeading: "✨ For the Best Friend Anyone Could Ask For ✨",
+      letterParagraphs: [
+        "There’s something special about a friendship that feels like home – no matter how far apart we are, or how long it’s been since we last spoke, I know you’ve got my back, and I’ve got yours.",
+        "You’ve seen me at my best and at my worst. You’ve celebrated my victories and held me together during my struggles. Through laughter and tears, silence and endless chatter – you’ve been my anchor.",
+        "They say friends are the family we choose. I couldn’t have chosen better. You are loyal, honest, kind, and absolutely hilarious. You make even the dullest days feel like an adventure, and you’ve taught me what it really means to be there for someone.",
+        "This Friendship Day, I just want to say: thank you. Thank you for being you – unapologetically, beautifully, wonderfully you. For the late‑night talks, the stupid jokes, the deep conversations, and for never judging me, even when I was a mess.",
+        "I don’t say it enough, but I love you, mate. You’re not just a friend; you’re a part of who I am. And I wouldn’t trade that for anything in the world.",
+        "So here’s to us – to many more years of adventures, inside jokes, and growing older together (even if we never actually grow up). Happy Friendship Day! 💛"
+      ],
+      letterSignature: "— Forever grateful, your friend 🤝",
+      catchTitle: "🐟 Catch the Treat (Friendship Edition)",
+      catchSubtitle: "Move your finger or mouse to catch the falling friendship snacks",
+      catchDuration: 25,
+      catchSpawn: 400,
+      catEmoji: "🐱",
+      treatEmoji: "🍩",
+      catchMessages: {
+        start: "👆 Move to catch snacks!",
+        playing: "👆 Keep catching, buddy!",
+        miss: "😿 Missed… try again!",
+        catch: "😸 Nice catch, friend!",
+        gameOver: "⏰ Time up! Score: "
       },
-      games: {
-        catch: {
-          title: "🐟 Catch the Treat (Friendship Edition)",
-          subtitle: "Move your finger or mouse to catch the falling friendship snacks",
-          duration: 25,
-          spawnInterval: 400,
-          catEmoji: "🐱",
-          treatEmoji: "🍩",
-          messages: {
-            start: "👆 Move to catch snacks!",
-            playing: "👆 Keep catching, buddy!",
-            miss: "😿 Missed… try again!",
-            catch: "😸 Nice catch, friend!",
-            gameOver: "⏰ Time up! Score: "
-          }
-        },
-        pounce: {
-          title: "🐾 Pounce – Friendship High‑Five",
-          subtitle: "Tap the paws before they disappear",
-          duration: 20,
-          pawEmoji: "🤝",
-          messages: {
-            start: "👆 Tap the popping high‑fives!",
-            playing: "👆 Keep high‑fiving!",
-            hit: "👏 Got it, mate!",
-            gameOver: "⏰ Done! Score: "
-          }
-        },
-        wheel: {
-          title: "🎡 Friendship Activity Wheel",
-          subtitle: "Let fate decide our next hangout",
-          options: ["☕ Coffee", "🍕 Pizza", "🎮 Games", "🚶 Walk", "📚 Bookstore", "🎬 Movie", "🎨 Paint", "🎵 Music"],
-          colors: ["#9e1b3a", "#5a3470", "#d4af37", "#c23a53", "#3b2050", "#f0d98c", "#7a4a8a", "#e8b4bc"],
-          resultPrefix: "🎯 Let's ",
-          spinBtn: "🔄 Spin!"
-        },
-        scratch: {
-          title: "🎁 Scratch to Reveal a Friendship Quote",
-          subtitle: "Scratch the gold foil to see a message",
-          message: "✨ Friendship isn't a big thing – it's a million little things ✨"
-        },
-        memory: {
-          title: "🧩 Memory Match – Friendship Icons",
-          subtitle: "Find all 6 pairs of friendship symbols",
-          emojis: ["🤝", "💛", "🌟", "👫", "🎉", "🍻"],
-          backEmoji: "⭐",
-          messages: {
-            start: "⭐ Flip cards to match, friend!",
-            flip: "👆 Flip another card",
-            match: "✅ Match found!",
-            complete: "🎉 You completed all pairs – friendship forever!",
-            wrong: "❌ Not a match, try again"
-          }
-        },
-        compliment: {
-          title: "💖 Compliment Booth – Friendship Edition",
-          subtitle: "Feeling down? Tap here for a boost",
-          button: "🌟 Give me a friendship boost",
-          placeholder: "✨ Tap the button ✨",
-          list: [
-            "✨ You are an amazing friend – truly one of a kind.",
-            "💛 Your friendship is a gift I cherish every day.",
-            "🌟 You make the world a better place just by being in it.",
-            "🎈 I’m so grateful to have you in my life.",
-            "🤝 You are loyal, honest, and absolutely wonderful.",
-            "🔥 You bring out the best in me.",
-            "💫 Your kindness and humour light up every room.",
-            "🌈 Every day with you is a reason to smile.",
-            "🌺 You are the kind of friend everyone wishes they had.",
-            "⭐ You are my person – forever and always."
-          ]
-        }
+      pounceTitle: "🐾 Pounce – Friendship High‑Five",
+      pounceSubtitle: "Tap the paws before they disappear",
+      pounceDuration: 20,
+      pawEmoji: "🤝",
+      pounceMessages: {
+        start: "👆 Tap the popping high‑fives!",
+        playing: "👆 Keep high‑fiving!",
+        hit: "👏 Got it, mate!",
+        gameOver: "⏰ Done! Score: "
       },
-      footer: {
-        text: "🤝 Friendship Day – You are loved",
-        subtext: "— Always by your side · 2026 —"
+      wheelTitle: "🎡 Friendship Activity Wheel",
+      wheelSubtitle: "Let fate decide our next hangout",
+      wheelOptions: ["☕ Coffee", "🍕 Pizza", "🎮 Games", "🚶 Walk", "📚 Bookstore", "🎬 Movie", "🎨 Paint", "🎵 Music"],
+      wheelColors: ["#9e1b3a", "#5a3470", "#d4af37", "#c23a53", "#3b2050", "#f0d98c", "#7a4a8a", "#e8b4bc"],
+      wheelResultPrefix: "🎯 Let's ",
+      spinBtnText: "🔄 Spin!",
+      scratchTitle: "🎁 Scratch to Reveal a Friendship Quote",
+      scratchSubtitle: "Scratch the gold foil to see a message",
+      scratchMessage: "✨ Friendship isn't a big thing – it's a million little things ✨",
+      memoryTitle: "🧩 Memory Match – Friendship Icons",
+      memorySubtitle: "Find all 6 pairs of friendship symbols",
+      memoryEmojis: ["🤝", "💛", "🌟", "👫", "🎉", "🍻"],
+      memoryBack: "⭐",
+      memoryMessages: {
+        start: "⭐ Flip cards to match, friend!",
+        flip: "👆 Flip another card",
+        match: "✅ Match found!",
+        complete: "🎉 You completed all pairs – friendship forever!",
+        wrong: "❌ Not a match, try again"
       },
-      colors: {
-        bgDark: "#1a1423",
-        bgMid: "#2a1f33",
-        accent: "#e8a87c",
-        accentLight: "#f5cba7",
-        gold: "#d4af37",
-        goldLight: "#f0d98c",
-        cream: "#f7ede0",
-        blush: "#f5b7b1",
-        crimson: "#c0392b",
-        crimsonLight: "#e74c3c"
-      }
+      complimentTitle: "💖 Compliment Booth – Friendship Edition",
+      complimentSubtitle: "Feeling down? Tap here for a boost",
+      complimentButton: "🌟 Give me a friendship boost",
+      complimentPlaceholder: "✨ Tap the button ✨",
+      complimentList: [
+        "✨ You are an amazing friend – truly one of a kind.",
+        "💛 Your friendship is a gift I cherish every day.",
+        "🌟 You make the world a better place just by being in it.",
+        "🎈 I’m so grateful to have you in my life.",
+        "🤝 You are loyal, honest, and absolutely wonderful.",
+        "🔥 You bring out the best in me.",
+        "💫 Your kindness and humour light up every room.",
+        "🌈 Every day with you is a reason to smile.",
+        "🌺 You are the kind of friend everyone wishes they had.",
+        "⭐ You are my person – forever and always."
+      ],
+      footerText: "🤝 Friendship Day – You are loved",
+      footerSubtext: "— Always by your side · 2026 —"
     };
 
-    // ─── BUILD ENGINE (completely self‑contained) ───
-
+    // ─── Replace placeholders in the page ───
     function replaceName(str) {
       return str.replace(/\{\{name\}\}/g, CONFIG.recipientName || 'friend');
     }
 
-    function applyConfig() {
-      const root = document.documentElement;
-      const c = CONFIG.colors;
-      root.style.setProperty('--bg-dark', c.bgDark);
-      root.style.setProperty('--bg-mid', c.bgMid);
-      root.style.setProperty('--accent', c.accent);
-      root.style.setProperty('--accent-light', c.accentLight);
-      root.style.setProperty('--gold', c.gold);
-      root.style.setProperty('--gold-light', c.goldLight);
-      root.style.setProperty('--cream', c.cream);
-      root.style.setProperty('--blush', c.blush);
-      root.style.setProperty('--crimson', c.crimson);
-      root.style.setProperty('--crimson-light', c.crimsonLight);
+    // Apply texts
+    document.getElementById('envelopeLabel').textContent = replaceName(CONFIG.envelopeLabel);
+    document.getElementById('tapHint').textContent = replaceName(CONFIG.tapHint);
+    document.getElementById('letterHeading').textContent = replaceName(CONFIG.letterHeading);
+    const pContainer = document.getElementById('letterParagraphs');
+    pContainer.innerHTML = '';
+    CONFIG.letterParagraphs.forEach(p => {
+      const para = document.createElement('p');
+      para.textContent = replaceName(p);
+      pContainer.appendChild(para);
+    });
+    document.getElementById('letterSignature').textContent = replaceName(CONFIG.letterSignature);
 
-      document.getElementById('siteTitle').textContent = replaceName(CONFIG.siteTitle);
-      document.getElementById('envelopeLabel').textContent = replaceName(CONFIG.envelope.label);
-      document.getElementById('tapHint').textContent = replaceName(CONFIG.envelope.tapHint);
-      document.getElementById('letterHeading').textContent = replaceName(CONFIG.envelope.letterHeading);
+    document.getElementById('catchTitle').textContent = replaceName(CONFIG.catchTitle);
+    document.getElementById('catchSubtitle').textContent = replaceName(CONFIG.catchSubtitle);
 
-      const pContainer = document.getElementById('letterParagraphs');
-      pContainer.innerHTML = '';
-      CONFIG.envelope.letterParagraphs.forEach(p => {
-        const para = document.createElement('p');
-        para.textContent = replaceName(p);
-        pContainer.appendChild(para);
-      });
-      document.getElementById('letterSignature').textContent = replaceName(CONFIG.envelope.letterSignature);
-      document.getElementById('footerText').textContent = replaceName(CONFIG.footer.text);
-      document.getElementById('footerSubtext').textContent = replaceName(CONFIG.footer.subtext);
+    document.getElementById('pounceTitle').textContent = replaceName(CONFIG.pounceTitle);
+    document.getElementById('pounceSubtitle').textContent = replaceName(CONFIG.pounceSubtitle);
 
-      window._complimentList = CONFIG.games.compliment.list.map(replaceName);
-      buildSections();
-    }
+    document.getElementById('wheelTitle').textContent = replaceName(CONFIG.wheelTitle);
+    document.getElementById('wheelSubtitle').textContent = replaceName(CONFIG.wheelSubtitle);
+    document.getElementById('spinBtn').textContent = CONFIG.spinBtnText;
 
-    function createSection(title, subtitle) {
-      const section = document.createElement('section');
-      section.className = 'reveal';
-      const h2 = document.createElement('h2');
-      h2.className = 'section-title';
-      h2.textContent = replaceName(title);
-      section.appendChild(h2);
-      const sub = document.createElement('p');
-      sub.className = 'section-sub';
-      sub.textContent = replaceName(subtitle);
-      section.appendChild(sub);
-      return section;
-    }
+    document.getElementById('scratchTitle').textContent = replaceName(CONFIG.scratchTitle);
+    document.getElementById('scratchSubtitle').textContent = replaceName(CONFIG.scratchSubtitle);
+    document.getElementById('scratchMessage').textContent = replaceName(CONFIG.scratchMessage);
 
-    function buildSections() {
-      const container = document.getElementById('dynamicSections');
-      container.innerHTML = '';
-      const games = CONFIG.games;
+    document.getElementById('memoryTitle').textContent = replaceName(CONFIG.memoryTitle);
+    document.getElementById('memorySubtitle').textContent = replaceName(CONFIG.memorySubtitle);
 
-      // Catch
-      const catchSection = createSection(games.catch.title, games.catch.subtitle);
-      const catchArea = document.createElement('div');
-      catchArea.id = 'game-area';
-      catchArea.innerHTML = `<div class="cat-player" id="catPlayer">${games.catch.catEmoji}</div>`;
-      catchSection.appendChild(catchArea);
-      const catchHUD = document.createElement('div');
-      catchHUD.className = 'game-hud';
-      catchHUD.innerHTML = `<span>🍩 <span id="catchScore">0</span></span><span>⏱️ <span id="catchTimer">${games.catch.duration}</span>s</span>`;
-      catchSection.appendChild(catchHUD);
-      const catchMsg = document.createElement('div');
-      catchMsg.className = 'game-msg';
-      catchMsg.id = 'catchMsg';
-      catchMsg.textContent = replaceName(games.catch.messages.start);
-      catchSection.appendChild(catchMsg);
-      container.appendChild(catchSection);
+    document.getElementById('complimentTitle').textContent = replaceName(CONFIG.complimentTitle);
+    document.getElementById('complimentSubtitle').textContent = replaceName(CONFIG.complimentSubtitle);
+    document.getElementById('complimentBtn').textContent = replaceName(CONFIG.complimentButton);
+    document.getElementById('complimentCard').textContent = replaceName(CONFIG.complimentPlaceholder);
 
-      // Pounce
-      const pounceSection = createSection(games.pounce.title, games.pounce.subtitle);
-      const pounceGrid = document.createElement('div');
-      pounceGrid.className = 'pounce-grid';
-      pounceGrid.id = 'pounceGrid';
-      for (let i = 0; i < 9; i++) {
-        const hole = document.createElement('div');
-        hole.className = 'hole';
-        const paw = document.createElement('div');
-        paw.className = 'paw';
-        paw.textContent = games.pounce.pawEmoji;
-        hole.appendChild(paw);
-        pounceGrid.appendChild(hole);
+    document.getElementById('footerText').textContent = replaceName(CONFIG.footerText);
+    document.getElementById('footerSubtext').textContent = replaceName(CONFIG.footerSubtext);
+
+    // Store compliment list globally
+    window._complimentList = CONFIG.complimentList.map(replaceName);
+
+    // ─── Envelope toggle ───
+    document.getElementById('envelopeWrap').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('envelope').classList.toggle('open');
+      document.getElementById('letter').classList.toggle('show');
+    });
+
+    // ─── Sparkles ───
+    (function() {
+      const layer = document.getElementById('sparkleLayer');
+      for (let i = 0; i < 40; i++) {
+        const span = document.createElement('span');
+        span.style.left = Math.random() * 100 + 'vw';
+        span.style.animationDuration = (12 + Math.random() * 20) + 's';
+        span.style.animationDelay = (Math.random() * 15) + 's';
+        span.style.top = (70 + Math.random() * 30) + 'vh';
+        layer.appendChild(span);
       }
-      pounceSection.appendChild(pounceGrid);
-      const pounceHUD = document.createElement('div');
-      pounceHUD.className = 'game-hud';
-      pounceHUD.style.justifyContent = 'center';
-      pounceHUD.style.gap = '40px';
-      pounceHUD.innerHTML = `<span>🤝 <span id="pounceScore">0</span></span><span>⏱️ <span id="pounceTimer">${games.pounce.duration}</span>s</span>`;
-      pounceSection.appendChild(pounceHUD);
-      const pounceMsg = document.createElement('div');
-      pounceMsg.className = 'game-msg';
-      pounceMsg.id = 'pounceMsg';
-      pounceMsg.textContent = replaceName(games.pounce.messages.start);
-      pounceSection.appendChild(pounceMsg);
-      container.appendChild(pounceSection);
+    })();
 
-      // Wheel
-      const wheelSection = createSection(games.wheel.title, games.wheel.subtitle);
-      const wheelWrap = document.createElement('div');
-      wheelWrap.className = 'wheel-wrap';
-      wheelWrap.innerHTML = `<div class="wheel-pointer">▼</div><canvas id="wheelCanvas" width="600" height="600"></canvas><div class="wheel-hub"></div>`;
-      wheelSection.appendChild(wheelWrap);
-      const wheelResult = document.createElement('div');
-      wheelResult.className = 'wheel-result';
-      wheelResult.id = 'wheelResult';
-      wheelResult.textContent = '🎲 Tap the wheel';
-      wheelSection.appendChild(wheelResult);
-      const spinBtn = document.createElement('button');
-      spinBtn.className = 'btn';
-      spinBtn.id = 'spinBtn';
-      spinBtn.textContent = games.wheel.spinBtn;
-      wheelSection.appendChild(spinBtn);
-      container.appendChild(wheelSection);
-
-      // Scratch
-      const scratchSection = createSection(games.scratch.title, games.scratch.subtitle);
-      const scratchWrap = document.createElement('div');
-      scratchWrap.className = 'scratch-wrap';
-      scratchWrap.innerHTML = `<div class="scratch-message" id="scratchMessage">${replaceName(games.scratch.message)}</div><canvas id="scratchCanvas" width="420" height="180"></canvas>`;
-      scratchSection.appendChild(scratchWrap);
-      container.appendChild(scratchSection);
-
-      // Memory
-      const memorySection = createSection(games.memory.title, games.memory.subtitle);
-      const memoryGrid = document.createElement('div');
-      memoryGrid.className = 'memory-grid';
-      memoryGrid.id = 'memoryGrid';
-      memorySection.appendChild(memoryGrid);
-      const memoryMsg = document.createElement('div');
-      memoryMsg.className = 'game-msg';
-      memoryMsg.id = 'memoryMsg';
-      memoryMsg.textContent = replaceName(games.memory.messages.start);
-      memorySection.appendChild(memoryMsg);
-      container.appendChild(memorySection);
-
-      // Compliment
-      const complimentSection = createSection(games.compliment.title, games.compliment.subtitle);
-      const complimentCard = document.createElement('div');
-      complimentCard.className = 'compliment-card';
-      complimentCard.id = 'complimentCard';
-      complimentCard.textContent = replaceName(games.compliment.placeholder);
-      complimentSection.appendChild(complimentCard);
-      const compBtn = document.createElement('button');
-      compBtn.className = 'btn';
-      compBtn.id = 'complimentBtn';
-      compBtn.textContent = replaceName(games.compliment.button);
-      complimentSection.appendChild(compBtn);
-      container.appendChild(complimentSection);
-
-      initCatchGame(games.catch);
-      initPounceGame(games.pounce);
-      initWheelGame(games.wheel);
-      initScratchGame();
-      initMemoryGame(games.memory);
-      initComplimentGame();
+    // ─── Scroll reveal ───
+    function setupReveal() {
+      const els = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('in');
+        });
+      }, { threshold: 0.1 });
+      els.forEach(el => observer.observe(el));
     }
+    setupReveal();
 
-    // ─── GAME FUNCTIONS (fully corrected) ───
+    // ════════════════════════════════════════════════════════════
+    //  GAME LOGIC – all games now initialised here
+    // ════════════════════════════════════════════════════════════
 
-    function initCatchGame(cfg) {
+    // ─── CATCH ───
+    (function() {
       const area = document.getElementById('game-area');
       const cat = document.getElementById('catPlayer');
       const scoreEl = document.getElementById('catchScore');
       const timerEl = document.getElementById('catchTimer');
       const msgEl = document.getElementById('catchMsg');
-      if (!area) return;
-      let score = 0, timeLeft = cfg.duration, gameRunning = false, treatInterval, timerInterval;
+      const cfg = {
+        duration: CONFIG.catchDuration,
+        spawnInterval: CONFIG.catchSpawn,
+        catEmoji: CONFIG.catEmoji,
+        treatEmoji: CONFIG.treatEmoji,
+        messages: CONFIG.catchMessages
+      };
+      let score = 0,
+        timeLeft = cfg.duration,
+        gameRunning = false,
+        treatInterval, timerInterval;
       let catX = 50;
+
       function updateCat() { cat.style.left = catX + '%'; }
+
       function spawnTreat() {
         if (!gameRunning) return;
         const treat = document.createElement('div');
@@ -455,6 +421,7 @@
           }
         }, 20);
       }
+
       function moveCat(e) {
         const rect = area.getBoundingClientRect();
         const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
@@ -462,7 +429,9 @@
         updateCat();
       }
       area.addEventListener('mousemove', moveCat);
-      area.addEventListener('touchmove', (e) => { e.preventDefault(); moveCat(e); });
+      area.addEventListener('touchmove', (e) => { e.preventDefault();
+        moveCat(e); });
+
       function startGame() {
         if (gameRunning) return;
         gameRunning = true;
@@ -485,19 +454,39 @@
         }, 1000);
       }
       area.addEventListener('click', () => { if (!gameRunning) startGame(); });
-      area.addEventListener('touchstart', (e) => { if (!gameRunning) { e.preventDefault(); startGame(); } });
+      area.addEventListener('touchstart', (e) => { if (!gameRunning) { e.preventDefault();
+          startGame(); } });
       setTimeout(() => { if (!gameRunning) msgEl.textContent = replaceName(cfg.messages.start); }, 500);
-    }
+    })();
 
-    function initPounceGame(cfg) {
+    // ─── POUNCE ───
+    (function() {
       const grid = document.getElementById('pounceGrid');
       const scoreEl = document.getElementById('pounceScore');
       const timerEl = document.getElementById('pounceTimer');
       const msgEl = document.getElementById('pounceMsg');
-      if (!grid) return;
-      let score = 0, timeLeft = cfg.duration, gameRunning = false;
-      let pounceInterval, timerInterval;
+      const cfg = {
+        duration: CONFIG.pounceDuration,
+        pawEmoji: CONFIG.pawEmoji,
+        messages: CONFIG.pounceMessages
+      };
+      // Build holes
+      grid.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        const hole = document.createElement('div');
+        hole.className = 'hole';
+        const paw = document.createElement('div');
+        paw.className = 'paw';
+        paw.textContent = cfg.pawEmoji;
+        hole.appendChild(paw);
+        grid.appendChild(hole);
+      }
       const holes = grid.querySelectorAll('.hole');
+      let score = 0,
+        timeLeft = cfg.duration,
+        gameRunning = false;
+      let pounceInterval, timerInterval;
+
       function showPaw() {
         if (!gameRunning) return;
         holes.forEach(h => h.classList.remove('up', 'hit'));
@@ -505,6 +494,7 @@
         holes[idx].classList.add('up');
         setTimeout(() => { if (gameRunning) holes[idx].classList.remove('up'); }, 1200);
       }
+
       function startPounce() {
         if (gameRunning) return;
         gameRunning = true;
@@ -526,6 +516,7 @@
           }
         }, 1000);
       }
+
       holes.forEach(hole => {
         hole.addEventListener('click', () => {
           if (!gameRunning) return;
@@ -542,23 +533,28 @@
         });
       });
       grid.addEventListener('click', () => { if (!gameRunning) startPounce(); });
-      grid.addEventListener('touchstart', (e) => { if (!gameRunning) { e.preventDefault(); startPounce(); } });
+      grid.addEventListener('touchstart', (e) => { if (!gameRunning) { e.preventDefault();
+          startPounce(); } });
       setTimeout(() => { if (!gameRunning) msgEl.textContent = replaceName(cfg.messages.start); }, 500);
-    }
+    })();
 
-    function initWheelGame(cfg) {
+    // ─── WHEEL ───
+    (function() {
       const canvas = document.getElementById('wheelCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const resultEl = document.getElementById('wheelResult');
       const spinBtn = document.getElementById('spinBtn');
-      const options = cfg.options;
-      const colors = cfg.colors;
+      const options = CONFIG.wheelOptions;
+      const colors = CONFIG.wheelColors;
       const segAngle = (2 * Math.PI) / options.length;
-      let currentRotation = 0, spinning = false;
+      let currentRotation = 0,
+        spinning = false;
 
       function drawWheel(rotation) {
-        const cx = 300, cy = 300, r = 280;
+        const cx = 300,
+          cy = 300,
+          r = 280;
         ctx.clearRect(0, 0, 600, 600);
         for (let i = 0; i < options.length; i++) {
           const start = i * segAngle + rotation;
@@ -567,7 +563,6 @@
           ctx.moveTo(cx, cy);
           ctx.arc(cx, cy, r, start, end);
           ctx.closePath();
-          // FIXED: use modulo to get correct color
           ctx.fillStyle = colors[i % colors.length];
           ctx.fill();
           ctx.strokeStyle = 'rgba(255,255,255,0.15)';
@@ -614,7 +609,7 @@
           const normalized = newRotation % (2 * Math.PI);
           let idx = Math.floor(((2 * Math.PI - normalized) % (2 * Math.PI)) / segAngle);
           if (idx >= options.length) idx = 0;
-          resultEl.textContent = cfg.resultPrefix + options[idx] + ' !';
+          resultEl.textContent = CONFIG.wheelResultPrefix + options[idx] + ' !';
           spinning = false;
           spinBtn.disabled = false;
           currentRotation = newRotation;
@@ -623,9 +618,10 @@
 
       spinBtn.addEventListener('click', spin);
       canvas.addEventListener('click', spin);
-    }
+    })();
 
-    function initScratchGame() {
+    // ─── SCRATCH ───
+    (function() {
       const canvas = document.getElementById('scratchCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -645,12 +641,14 @@
         ctx.fill();
       }
       let isDrawing = false;
+
       function getPos(e) {
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
         const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
         return { x, y };
       }
+
       function scratch(x, y) {
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
@@ -658,26 +656,34 @@
         ctx.fill();
         ctx.globalCompositeOperation = 'source-over';
       }
-      canvas.addEventListener('mousedown', (e) => { isDrawing = true; const p = getPos(e); scratch(p.x, p.y); });
-      canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const p = getPos(e); scratch(p.x, p.y); } });
+      canvas.addEventListener('mousedown', (e) => { isDrawing = true; const p = getPos(e);
+        scratch(p.x, p.y); });
+      canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const p = getPos(e);
+          scratch(p.x, p.y); } });
       canvas.addEventListener('mouseup', () => { isDrawing = false; });
       canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-      canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; const p = getPos(e); scratch(p.x, p.y); });
-      canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if (isDrawing) { const p = getPos(e); scratch(p.x, p.y); } });
+      canvas.addEventListener('touchstart', (e) => { e.preventDefault();
+        isDrawing = true; const p = getPos(e);
+        scratch(p.x, p.y); });
+      canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if (isDrawing) { const p = getPos(e);
+          scratch(p.x, p.y); } });
       canvas.addEventListener('touchend', () => { isDrawing = false; });
-    }
+    })();
 
-    function initMemoryGame(cfg) {
+    // ─── MEMORY ───
+    (function() {
       const grid = document.getElementById('memoryGrid');
       const msgEl = document.getElementById('memoryMsg');
-      if (!grid) return;
-      const emojis = cfg.emojis;
+      const emojis = CONFIG.memoryEmojis;
       const pairs = [...emojis, ...emojis];
       for (let i = pairs.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
       }
-      let flipped = [], matched = 0, lock = false;
+      let flipped = [],
+        matched = 0,
+        lock = false;
+
       function render() {
         grid.innerHTML = '';
         pairs.forEach((emoji, idx) => {
@@ -685,11 +691,12 @@
           card.className = 'card';
           card.dataset.idx = idx;
           card.dataset.emoji = emoji;
-          card.innerHTML = `<span class="back">${cfg.backEmoji}</span><span class="face">${emoji}</span>`;
+          card.innerHTML = `<span class="back">${CONFIG.memoryBack}</span><span class="face">${emoji}</span>`;
           card.addEventListener('click', () => flipCard(card));
           grid.appendChild(card);
         });
       }
+
       function flipCard(card) {
         if (lock) return;
         if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
@@ -704,31 +711,32 @@
             matched++;
             flipped = [];
             lock = false;
-            msgEl.textContent = replaceName(cfg.messages.match);
-            if (matched === 6) msgEl.textContent = replaceName(cfg.messages.complete);
-            setTimeout(() => { if (matched < 6) msgEl.textContent = replaceName(cfg.messages.start); }, 800);
+            msgEl.textContent = replaceName(CONFIG.memoryMessages.match);
+            if (matched === 6) msgEl.textContent = replaceName(CONFIG.memoryMessages.complete);
+            setTimeout(() => { if (matched < 6) msgEl.textContent = replaceName(CONFIG.memoryMessages.start); }, 800);
           } else {
-            msgEl.textContent = replaceName(cfg.messages.wrong);
+            msgEl.textContent = replaceName(CONFIG.memoryMessages.wrong);
             setTimeout(() => {
               a.classList.remove('flipped');
               b.classList.remove('flipped');
               flipped = [];
               lock = false;
-              msgEl.textContent = replaceName(cfg.messages.start);
+              msgEl.textContent = replaceName(CONFIG.memoryMessages.start);
             }, 800);
           }
         } else {
-          msgEl.textContent = replaceName(cfg.messages.flip);
+          msgEl.textContent = replaceName(CONFIG.memoryMessages.flip);
         }
       }
       render();
-    }
+      msgEl.textContent = replaceName(CONFIG.memoryMessages.start);
+    })();
 
-    function initComplimentGame() {
+    // ─── COMPLIMENT ───
+    (function() {
       const card = document.getElementById('complimentCard');
       const btn = document.getElementById('complimentBtn');
-      if (!card || !btn) return;
-      const list = window._complimentList || CONFIG.games.compliment.list.map(replaceName);
+      const list = window._complimentList || CONFIG.complimentList.map(replaceName);
       btn.addEventListener('click', () => {
         const msg = list[Math.floor(Math.random() * list.length)];
         card.textContent = msg;
@@ -736,42 +744,7 @@
         void card.offsetWidth;
         card.classList.add('pulse');
       });
-    }
-
-    // ─── Envelope toggle ───
-    document.getElementById('envelopeWrap').addEventListener('click', function(e) {
-      e.stopPropagation();
-      document.getElementById('envelope').classList.toggle('open');
-      document.getElementById('letter').classList.toggle('show');
-    });
-
-    // ─── Sparkles ───
-    (function() {
-      const layer = document.getElementById('sparkleLayer');
-      for (let i = 0; i < 40; i++) {
-        const span = document.createElement('span');
-        span.style.left = Math.random() * 100 + 'vw';
-        span.style.animationDuration = (12 + Math.random() * 20) + 's';
-        span.style.animationDelay = (Math.random() * 15) + 's';
-        span.style.top = (70 + Math.random() * 30) + 'vh';
-        layer.appendChild(span);
-      }
     })();
-
-    // ─── Scroll reveal ───
-    function setupReveal() {
-      const els = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('in');
-        });
-      }, { threshold: 0.1 });
-      els.forEach(el => observer.observe(el));
-    }
-
-    // ─── Start ───
-    applyConfig();
-    setupReveal();
   </script>
 </body>
 </html>
