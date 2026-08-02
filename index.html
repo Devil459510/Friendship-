@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title id="siteTitle">🤝 Friendship Day – For My Best Friend</title>
+  <title>🤝 Friendship Day – For My Best Friend</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── same base styles as before, with a warmer friendship colour palette ─── */
+    /* ─── Friendship Day Theme ─── */
     :root {
       --bg-dark: #1a1423;
       --bg-mid: #2a1f33;
@@ -33,7 +33,6 @@
       font-family: 'Cormorant Garamond', serif;
       overflow-x: hidden;
       min-height: 100vh;
-      position: relative;
     }
     .sparkle { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
     .sparkle span { position: absolute; width: 3px; height: 3px; background: var(--gold-light); border-radius: 50%; opacity: 0.5; animation: drift linear infinite; }
@@ -127,14 +126,14 @@
   <div id="dynamicSections"></div>
 
   <footer>
-    <div id="footerText">🤝 Friendship Day – You make life brighter</div>
+    <div id="footerText">🤝 Friendship Day – You are loved</div>
     <span id="footerSubtext">— Always by your side · 2026 —</span>
   </footer>
 
   <script>
     // ─── CONFIG – Friendship Day Edition ───
     const CONFIG = {
-      recipientName: "My Best Friend",  // change to your friend's name
+      recipientName: "My Best Friend",
       siteTitle: "🤝 Friendship Day – For My Best Friend",
       envelope: {
         label: "🤝 For My Best Friend",
@@ -241,7 +240,7 @@
       }
     };
 
-    // ─── BUILD ENGINE (same as before, but uses CONFIG) ───
+    // ─── BUILD ENGINE (completely self‑contained) ───
 
     function replaceName(str) {
       return str.replace(/\{\{name\}\}/g, CONFIG.recipientName || 'friend');
@@ -406,7 +405,8 @@
       initComplimentGame();
     }
 
-    // ─── GAME FUNCTIONS (unchanged from previous – they work perfectly) ───
+    // ─── GAME FUNCTIONS (fully corrected) ───
+
     function initCatchGame(cfg) {
       const area = document.getElementById('game-area');
       const cat = document.getElementById('catPlayer');
@@ -567,11 +567,13 @@
           ctx.moveTo(cx, cy);
           ctx.arc(cx, cy, r, start, end);
           ctx.closePath();
+          // FIXED: use modulo to get correct color
           ctx.fillStyle = colors[i % colors.length];
           ctx.fill();
           ctx.strokeStyle = 'rgba(255,255,255,0.15)';
           ctx.lineWidth = 2;
           ctx.stroke();
+
           ctx.save();
           ctx.translate(cx, cy);
           ctx.rotate(start + segAngle / 2);
@@ -595,6 +597,7 @@
         ctx.lineWidth = 4;
         ctx.stroke();
       }
+
       drawWheel(0);
 
       function spin() {
@@ -735,7 +738,7 @@
       });
     }
 
-    // ─── Envelope ───
+    // ─── Envelope toggle ───
     document.getElementById('envelopeWrap').addEventListener('click', function(e) {
       e.stopPropagation();
       document.getElementById('envelope').classList.toggle('open');
@@ -755,6 +758,7 @@
       }
     })();
 
+    // ─── Scroll reveal ───
     function setupReveal() {
       const els = document.querySelectorAll('.reveal');
       const observer = new IntersectionObserver((entries) => {
@@ -765,246 +769,9 @@
       els.forEach(el => observer.observe(el));
     }
 
+    // ─── Start ───
     applyConfig();
     setupReveal();
   </script>
-</body>
-</html>.start); }, 500);
-        }
-
-        function initWheelGame(cfg) {
-            const canvas = document.getElementById('wheelCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const resultEl = document.getElementById('wheelResult');
-            const spinBtn = document.getElementById('spinBtn');
-            const options = cfg.options;
-            const colors = cfg.colors;
-            const segAngle = (2 * Math.PI) / options.length;
-            let currentRotation = 0,
-                spinning = false;
-
-            function drawWheel(rotation) {
-                const cx = 300,
-                    cy = 300,
-                    r = 280;
-                ctx.clearRect(0, 0, 600, 600);
-                for (let i = 0; i < options.length; i++) {
-                    const start = i * segAngle + rotation;
-                    const end = start + segAngle;
-                    ctx.beginPath();
-                    ctx.moveTo(cx, cy);
-                    ctx.arc(cx, cy, r, start, end);
-                    ctx.closePath();
-                    ctx.fillStyle = colors[i % colors.length];
-                    ctx.fill();
-                    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(start + segAngle / 2);
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.font = 'bold 24px "Quicksand", sans-serif';
-                    ctx.fillStyle = '#fff';
-                    ctx.shadowColor = 'rgba(0,0,0,0.5)';
-                    ctx.shadowBlur = 8;
-                    ctx.fillText(options[i], r * 0.62, 0);
-                    ctx.restore();
-                }
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-                ctx.strokeStyle = 'rgba(212,175,55,0.4)';
-                ctx.lineWidth = 4;
-                ctx.stroke();
-            }
-            drawWheel(0);
-
-            function spin() {
-                if (spinning) return;
-                spinning = true;
-                spinBtn.disabled = true;
-                resultEl.textContent = '🎡 Spinning...';
-                const extraSpins = 5 + Math.random() * 5;
-                const targetAngle = extraSpins * 2 * Math.PI + Math.random() * 2 * Math.PI;
-                const newRotation = currentRotation + targetAngle;
-                canvas.style.transition = 'transform 4.5s cubic-bezier(0.15, 0.85, 0.15, 1)';
-                canvas.style.transform = `rotate(${newRotation}rad)`;
-                setTimeout(() => {
-                    const normalized = newRotation % (2 * Math.PI);
-                    let idx = Math.floor(((2 * Math.PI - normalized) % (2 * Math.PI)) / segAngle);
-                    if (idx >= options.length) idx = 0;
-                    resultEl.textContent = cfg.resultPrefix + options[idx] + ' !';
-                    spinning = false;
-                    spinBtn.disabled = false;
-                    currentRotation = newRotation;
-                }, 4800);
-            }
-            spinBtn.addEventListener('click', spin);
-            canvas.addEventListener('click', spin);
-        }
-
-        function initScratchGame() {
-            const canvas = document.getElementById('scratchCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const wrap = canvas.parentElement;
-            const w = wrap.clientWidth || 420;
-            const h = 180;
-            canvas.width = w;
-            canvas.height = h;
-            canvas.style.width = w + 'px';
-            canvas.style.height = h + 'px';
-            ctx.fillStyle = '#d4af37';
-            ctx.fillRect(0, 0, w, h);
-            for (let i = 0; i < 60; i++) {
-                ctx.fillStyle = i % 2 === 0 ? 'rgba(255,215,0,0.3)' : 'rgba(184,134,11,0.3)';
-                ctx.beginPath();
-                ctx.arc(Math.random() * w, Math.random() * h, 2 + Math.random() * 6, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-            let isDrawing = false;
-
-            function getPos(e) {
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-                return { x, y };
-            }
-
-            function scratch(x, y) {
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, 18, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.globalCompositeOperation = 'source-over';
-            }
-            canvas.addEventListener('mousedown', (e) => { isDrawing = true; const p = getPos(e);
-                scratch(p.x, p.y); });
-            canvas.addEventListener('mousemove', (e) => { if (isDrawing) { const p = getPos(e);
-                    scratch(p.x, p.y); } });
-            canvas.addEventListener('mouseup', () => { isDrawing = false; });
-            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-            canvas.addEventListener('touchstart', (e) => { e.preventDefault();
-                isDrawing = true; const p = getPos(e);
-                scratch(p.x, p.y); });
-            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if (isDrawing) { const p = getPos(e);
-                    scratch(p.x, p.y); } });
-            canvas.addEventListener('touchend', () => { isDrawing = false; });
-        }
-
-        function initMemoryGame(cfg) {
-            const grid = document.getElementById('memoryGrid');
-            const msgEl = document.getElementById('memoryMsg');
-            if (!grid) return;
-            const emojis = cfg.emojis;
-            const pairs = [...emojis, ...emojis];
-            for (let i = pairs.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
-            }
-            let flipped = [],
-                matched = 0,
-                lock = false;
-
-            function render() {
-                grid.innerHTML = '';
-                pairs.forEach((emoji, idx) => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.dataset.idx = idx;
-                    card.dataset.emoji = emoji;
-                    card.innerHTML =
-                        `<span class="back">${cfg.backEmoji}</span><span class="face">${emoji}</span>`;
-                    card.addEventListener('click', () => flipCard(card));
-                    grid.appendChild(card);
-                });
-            }
-
-            function flipCard(card) {
-                if (lock) return;
-                if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-                card.classList.add('flipped');
-                flipped.push(card);
-                if (flipped.length === 2) {
-                    lock = true;
-                    const [a, b] = flipped;
-                    if (a.dataset.emoji === b.dataset.emoji) {
-                        a.classList.add('matched');
-                        b.classList.add('matched');
-                        matched++;
-                        flipped = [];
-                        lock = false;
-                        msgEl.textContent = replaceName(cfg.messages.match);
-                        if (matched === 6) msgEl.textContent = replaceName(cfg.messages.complete);
-                        setTimeout(() => { if (matched < 6) msgEl.textContent = replaceName(cfg.messages.start); },
-                            800);
-                    } else {
-                        msgEl.textContent = replaceName(cfg.messages.wrong);
-                        setTimeout(() => {
-                            a.classList.remove('flipped');
-                            b.classList.remove('flipped');
-                            flipped = [];
-                            lock = false;
-                            msgEl.textContent = replaceName(cfg.messages.start);
-                        }, 800);
-                    }
-                } else {
-                    msgEl.textContent = replaceName(cfg.messages.flip);
-                }
-            }
-            render();
-        }
-
-        function initComplimentGame() {
-            const card = document.getElementById('complimentCard');
-            const btn = document.getElementById('complimentBtn');
-            if (!card || !btn) return;
-            const list = window._complimentList || CONFIG.games.compliment.list.map(replaceName);
-            btn.addEventListener('click', () => {
-                const msg = list[Math.floor(Math.random() * list.length)];
-                card.textContent = msg;
-                card.classList.remove('pulse');
-                void card.offsetWidth;
-                card.classList.add('pulse');
-            });
-        }
-
-        // ─── Envelope toggle ───
-        document.getElementById('envelopeWrap').addEventListener('click', function() {
-            document.getElementById('envelope').classList.toggle('open');
-            document.getElementById('letter').classList.toggle('show');
-        });
-
-        // ─── Sparkles ───
-        (function() {
-            const layer = document.getElementById('sparkleLayer');
-            for (let i = 0; i < 40; i++) {
-                const span = document.createElement('span');
-                span.style.left = Math.random() * 100 + 'vw';
-                span.style.animationDuration = (12 + Math.random() * 20) + 's';
-                span.style.animationDelay = (Math.random() * 15) + 's';
-                span.style.top = (70 + Math.random() * 30) + 'vh';
-                layer.appendChild(span);
-            }
-        })();
-
-        // ─── Scroll reveal ───
-        function setupReveal() {
-            const els = document.querySelectorAll('.reveal');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('in');
-                });
-            }, { threshold: 0.1 });
-            els.forEach(el => observer.observe(el));
-        }
-
-        // ─── Init ───
-        applyConfig();
-        setupReveal();
-    </script>
-
 </body>
 </html>
